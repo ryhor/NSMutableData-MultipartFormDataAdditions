@@ -1,12 +1,15 @@
 Pod::Spec.new do |s|
-  s.name         = "NSMutableData+MultipartFormData"
-  s.version      = "0.1.1"
-  s.summary      = "Easily build multipart/form-data formatted data. (which used to post an image.)"
-  s.homepage     = "https://github.com/kaiinui/NSMutableData-MultipartFormDataAdditions"
-  s.license      = "MIT"
-  s.author       = { "kaiinui" => "lied.der.optik@gmail.com" }
-  s.source       = { :git => "https://github.com/ryhor/NSMutableData-MultipartFormDataAdditions.git", :tag => "v0.1.1" }
-  s.source_files  = "KIMultipart/Classes/**/*.{h,m}"
-  s.requires_arc = true
-  s.platform = "ios", '7.0'
+s.name         = 'NSMutableData+MultipartFormData'
+s.version      = '0.1.1'
+s.summary      = 'Multipart form data'
+s.author = {
+'Ryhor Burakou' => 'ahsirg@gmail.com'
+}
+s.source = {
+:git => 'https://github.com/ryhor/NSMutableData-MultipartFormData.git'
+}
+s.source_files  = "KIMultipart/Classes/**/*.{h,m}"
+s.homepage = 'https://ryhor.com'
+s.requires_arc = true
+s.resources = '*.{png}'
 end

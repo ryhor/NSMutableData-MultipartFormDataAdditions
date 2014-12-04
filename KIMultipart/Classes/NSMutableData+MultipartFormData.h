@@ -63,19 +63,21 @@ extern NSString *const KIMultipartContentType;
  *  Please note the data's filename will be like "807E6F16-0F10-43BD-9EBD-C93533816E31"
  *  If you want to set the data's filename, please use `- mp_setData:withFilename:forKey:`.
  *
- *  @param data <#data description#>
- *  @param key  <#key description#>
+ *  @param mimeType A mimetype for the content (image/jpeg, application/pdf, etc.)
+ *  @param data     A value.
+ *  @param key      A key paired with the value.
  */
-- (void)mp_setData:(NSData *)data forKey:(NSString *)key;
+- (void)mp_setData:(NSData *)data mimeType:(NSString*)mimeType forKey:(NSString *)key;
 
 /**
  *  Appends given data into the data in multipart/form-data format.
  *
  *  @param data     A value.
  *  @param filename A name represent the data.
+ *  @param mimeType A mimetype for the content (image/jpeg, application/pdf, etc.)
  *  @param key      A key paired with the value.
  */
-- (void)mp_setData:(NSData *)data withFilename:(NSString *)filename forKey:(NSString *)key;
+- (void)mp_setData:(NSData *)data withFilename:(NSString *)filename mimeType:(NSString*)mimeType forKey:(NSString *)key;
 
 # pragma mark - Data Shorthand (Image)
 

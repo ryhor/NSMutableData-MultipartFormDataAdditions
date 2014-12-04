@@ -6,6 +6,8 @@
 
 NSString *const KIMultipartBoundary = @"KIBoundary";
 NSString *const KIMultipartContentType = @"multipart/form-data; boundary=KIBoundary";
+NSString *const KIJPEGMimeType = @"image/jpeg";
+NSString *const KIPNGMimeType = @"image/png";
 
 @implementation NSMutableData (MultipartFormData)
 
@@ -45,17 +47,17 @@ NSString *const KIMultipartContentType = @"multipart/form-data; boundary=KIBound
 
 # pragma mark - Data
 
-- (void)mp_setData:(NSData *)data forKey:(NSString *)key {
+- (void)mp_setData:(NSData *)data mimeType:(NSString*)mimeType forKey:(NSString *)key{
     NSString *filename = [self mp_uniqueName];
     
-    [self mp_setData:data withFilename:filename forKey:key];
+    [self mp_setData:data withFilename:filename mimeType:mimeType forKey:key];
 }
 
-- (void)mp_setData:(NSData *)data withFilename:(NSString *)filename forKey:(NSString *)key {
+- (void)mp_setData:(NSData *)data withFilename:(NSString *)filename mimeType:(NSString*)mimeType forKey:(NSString *)key {
     [self mp_setBoundary];
     [self appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", key, filename] dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [self mp_setOctetStreamContentType];
+    [self mp_setContentTypeWithMimeType:mimeType];
     [self appendData:[NSData dataWithData:data]];
 }
 
@@ -70,7 +72,7 @@ NSString *const KIMultipartContentType = @"multipart/form-data; boundary=KIBound
 - (void)mp_setJPEGImage:(UIImage *)image withQuality:(CGFloat)quality withFilename:(NSString *)filename forKey:(NSString *)key {
     NSData *imageData = UIImageJPEGRepresentation(image, quality);
     
-    [self mp_setData:imageData withFilename:filename forKey:key];
+    [self mp_setData:imageData withFilename:filename mimeType:KIJPEGMimeType forKey:key];
 }
 
 - (void)mp_setPNGImage:(UIImage *)image forKey:(NSString *)key {
@@ -82,7 +84,7 @@ NSString *const KIMultipartContentType = @"multipart/form-data; boundary=KIBound
 - (void)mp_setPNGImage:(UIImage *)image withFilename:(NSString *)filename forKey:(NSString *)key {
     NSData *imageData = UIImagePNGRepresentation(image);
     
-    [self mp_setData:imageData withFilename:filename forKey:key];
+    [self mp_setData:imageData withFilename:filename mimeType:KIPNGMimeType forKey:key];
 }
 
 # pragma mark - Helpers
@@ -95,8 +97,9 @@ NSString *const KIMultipartContentType = @"multipart/form-data; boundary=KIBound
     [self appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", KIMultipartBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-- (void)mp_setOctetStreamContentType {
-    [self appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+- (void)mp_setContentTypeWithMimeType:(NSString*)mimeType {
+    NSString *dataString = [NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", mimeType];
+    [self appendData:[dataString dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 # pragma mark - Debugging Utilities
